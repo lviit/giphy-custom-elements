@@ -1,11 +1,11 @@
 let gifs = [{ title: "meow" }];
 const setGifs = data => {
-  gifs = data; 
+  gifs = data;
   render("gif-list");
 };
 
 const render = (component, parent = document.body) =>
-  parent.innerHTML = `<${component}></${component}>`;
+  (parent.innerHTML = `<${component}></${component}>`);
 
 customElements.define(
   "gif-item",
@@ -14,8 +14,26 @@ customElements.define(
       super();
       const root = this.attachShadow({ mode: "open" });
       root.innerHTML = ` 
+      <style>
+        :host {
+        }
+        div {
+          background-color: black;
+          position: relative;
+          height: 200px;
+        }
+        ::slotted(img) {
+          position: absolute;
+        }
+        ::slotted(h2) {
+          font-weight: 600;
+          position: absolute;
+          bottom: 0;
+        }
+      </style>
       <div>
-        <slot></slot>
+        <slot name="image"></slot>
+        <slot name="title"></slot>
       </div>
     `;
     }
@@ -28,16 +46,22 @@ customElements.define(
     constructor() {
       super();
       const root = this.attachShadow({ mode: "open" });
-      root.innerHTML = ` 
-      <div>
+      root.innerHTML = `
+        <style>
+          :host {
+           
+          }
+        </style>
         ${gifs
           .map(
             gif => `
-            <gif-item>${gif.title}</gif-item>
+            <gif-item>
+              <img slot="image" src="${gif.images.fixed_height_downsampled.url}"></img>
+              <h2 slot="title">${gif.title}</h2>
+            </gif-item>
         `
           )
           .join("")}
-      </div>
     `;
     }
   }
