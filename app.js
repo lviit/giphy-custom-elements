@@ -7,46 +7,25 @@ const setGifs = data => {
 const render = (component, parent = document.body) =>
   (parent.innerHTML = `<${component}></${component}>`);
 
-customElements.define(
-  "gif-item",
-  class extends HTMLElement {
-    constructor() {
-      super();
-      const root = this.attachShadow({ mode: "open" });
-      root.innerHTML = ` 
-      <style>
-        :host {
-        }
-        div {
-          background-color: black;
-          position: relative;
-          height: 200px;
-        }
-        ::slotted(img) {
-          position: absolute;
-        }
-        ::slotted(h2) {
-          font-weight: 600;
-          position: absolute;
-          bottom: 0;
-        }
-      </style>
-      <div>
-        <slot name="image"></slot>
-        <slot name="title"></slot>
-      </div>
-    `;
-    }
-  }
-);
+const gifItemImport = document.getElementById("gif-item-import").import;
+const gifItemTemplate = gifItemImport.getElementById("gif-item").content;
 
-customElements.define(
-  "gif-list",
-  class extends HTMLElement {
-    constructor() {
-      super();
-      const root = this.attachShadow({ mode: "open" });
-      root.innerHTML = `
+class GifItem extends HTMLElement {
+  constructor() {
+    super();
+    const root = this.attachShadow({ mode: "open" }).appendChild(
+      gifItemTemplate.cloneNode(true)
+    );
+  }
+}
+
+customElements.define("gif-item", GifItem);
+
+class GifList extends HTMLElement {
+  constructor() {
+    super();
+    const root = this.attachShadow({ mode: "open" });
+    root.innerHTML = `
         <style>
           :host {
            
@@ -56,16 +35,20 @@ customElements.define(
           .map(
             gif => `
             <gif-item>
-              <img slot="image" src="${gif.images.fixed_height_downsampled.url}"></img>
+              <img slot="image" src="${
+                gif.images.fixed_height_downsampled.url
+              }"></img>
               <h2 slot="title">${gif.title}</h2>
             </gif-item>
         `
           )
           .join("")}
     `;
-    }
   }
-);
+}
+
+
+customElements.define("gif-list", GifList);
 
 const apiKey = "XL9ssBo4JgPg3UjjDdvmIRal65byInd0";
 const host = "https://api.giphy.com";
