@@ -18,3 +18,19 @@
   </style>
   <div><slot name="image"></slot> <slot name="title"></slot></div>
 </template>
+
+<script>
+  const gifItemImport = document.getElementById("gif-item-import").import;
+  const gifItemTemplate = gifItemImport.getElementById("gif-item").content;
+
+  class GifItem extends HTMLElement {
+    constructor() {
+      super();
+      const root = this.attachShadow({ mode: "open" }).appendChild(
+        gifItemTemplate.cloneNode(true)
+      );
+    }
+  }
+
+  customElements.define("gif-item", GifItem);
+</script>
