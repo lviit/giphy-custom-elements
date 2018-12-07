@@ -1,13 +1,14 @@
-import request from "./request.js";
+import GifList from "./components/GifList.js";
+import GifItem from "./components/GifItem.js";
+
+customElements.define("gif-list", GifList);
+customElements.define("gif-item", GifItem);
 
 class App extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: "open" });
     this.search = this.search.bind(this);
-    this.state = {
-      keywords: ""
-    };
   }
 
   connectedCallback() {
@@ -34,51 +35,4 @@ class App extends HTMLElement {
 }
 
 customElements.define("app-container", App);
-
-class GifList extends HTMLElement {
-  constructor() {
-    super();
-    this.attachShadow({ mode: "open" });
-    this.state = {
-      data: []
-    };
-  }
-
-  static get observedAttributes() {
-    return ['keywords'];
-  }
-
-  attributeChangedCallback(name, oldValue, newValue) {
-    this.fetchData(newValue);
-  }
-
-  connectedCallback() {
-    this.fetchData();
-  }
-
-  async fetchData(keywords = "dog") {
-    console.log(keywords);
-    this.state.data = await request(keywords);
-    this.render();
-  }
-
-  render() {
-    this.shadowRoot.innerHTML = `
-      ${this.state.data
-        .map(
-          gif => `
-          <gif-item>
-            <img slot="image" src="${
-              gif.images.fixed_height_downsampled.url
-            }"></img>
-            <h2 slot="title">${gif.title}</h2>
-          </gif-item>
-      `
-        )
-        .join("")}
-      `;
-  }
-}
-
-customElements.define("gif-list", GifList);
 document.body.innerHTML = "<app-container></app-container>";
