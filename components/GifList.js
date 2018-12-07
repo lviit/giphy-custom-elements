@@ -32,9 +32,7 @@ class GifList extends HTMLElement {
           .map(
             gif => `
             <gif-item>
-              <img slot="image" src="${
-                gif.images.fixed_height.url
-              }"></img>
+              <img slot="image" src="${gif.images.fixed_height.url}"></img>
               <h2 slot="title">${gif.title}</h2>
             </gif-item>
         `
