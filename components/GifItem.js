@@ -6,14 +6,26 @@ class GifItem extends HTMLElement {
 
   connectedCallback() {
     this.render();
+
+    const img = new Image();
+    img.onload = () => {
+      this.setAttribute("img-loaded", 1);
+    };
+    img.src = this.getAttribute("img-src");
+    this.shadowRoot.appendChild(img);
   }
 
   render() {
-    this.shadowRoot.innerHTML = /*html*/`
+    this.shadowRoot.innerHTML = /*html*/ `
     <style>
       :host {
         margin: 10px;
         position: relative; 
+        transform: scale(0);
+        transition: transform 0.3s ease-in-out;
+      }
+      :host([img-loaded="1"]) {
+        transform: scale(1);
       }
       div {     
         position: absolute;
@@ -25,9 +37,6 @@ class GifItem extends HTMLElement {
         flex-direction: column;
         justify-content: flex-end;
       }
-      ::slotted(img) {
-        display: block;
-      }
       ::slotted(h2) {
         font-weight: 700;
         margin: 0;
@@ -37,8 +46,9 @@ class GifItem extends HTMLElement {
         letter-spacing: 0.5px;
       }
     </style>
-    <slot name="image"></slot> 
-    <div><slot name="title"></slot></div>`;
+    <div>
+      <slot name="title"></slot>
+    </div>`;
   }
 }
 
