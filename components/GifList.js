@@ -33,7 +33,7 @@ class GifList extends HTMLElement {
             gif => `
             <gif-item>
               <img slot="image" src="${
-                gif.images.fixed_height_downsampled.url
+                gif.images.fixed_height.url
               }"></img>
               <h2 slot="title">${gif.title}</h2>
             </gif-item>

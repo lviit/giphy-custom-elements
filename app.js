@@ -25,9 +25,41 @@ class App extends HTMLElement {
   }
 
   render() {
-    this.shadowRoot.innerHTML = /*html*/ ` 
+    this.shadowRoot.innerHTML = /*html*/ `
+      <style>
+        form {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding: 20px 0;
+        }
+        input {
+          font-size: 2rem;
+          padding: 10px 15px;
+          border: 0;
+          background: #eee;
+          font-weight: 700;
+          letter-spacing: 1px;
+        }
+        svg {
+          margin-left: -20px;
+        }
+        gif-list {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+          max-width: 1200px;
+          margin: 0 auto;
+        }
+      </style>
       <form id="search-form">
-        <input type="text" name="keywords">
+        <input type="text" name="keywords" placeholder="search">
+        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="13">
+          <g stroke-width="2" stroke="#6c6c6c" fill="none">
+            <path d="M11.29 11.71l-4-4"/>
+            <circle cx="5" cy="5" r="4"/>
+          </g>
+        </svg>
       </form>
       <gif-list keywords=""></gif-list>
     `;
@@ -35,4 +67,4 @@ class App extends HTMLElement {
 }
 
 customElements.define("app-container", App);
-document.body.innerHTML = "<app-container></app-container>";
+document.getElementById("root").innerHTML = "<app-container></app-container>";

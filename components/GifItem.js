@@ -12,22 +12,33 @@ class GifItem extends HTMLElement {
     this.shadowRoot.innerHTML = /*html*/`
     <style>
       :host {
+        margin: 10px;
+        position: relative; 
       }
-      div {
-        background-color: black;
-        position: relative;
-        height: 200px;
+      div {     
+        position: absolute;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(0,0,0,0.8) 100%);
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
       }
       ::slotted(img) {
-        position: absolute;
+        display: block;
       }
       ::slotted(h2) {
-        font-weight: 600;
-        position: absolute;
-        bottom: 0;
+        font-weight: 700;
+        margin: 0;
+        padding: 15px;
+        color: white;
+        text-shadow: 2px 2px 7px #071B28;
+        letter-spacing: 0.5px;
       }
     </style>
-    <div><slot name="image"></slot> <slot name="title"></slot></div>`;
+    <slot name="image"></slot> 
+    <div><slot name="title"></slot></div>`;
   }
 }
 
